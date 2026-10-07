@@ -1,0 +1,43 @@
+{
+  "name": "storage_box_with_lid",
+  "description": "Plastic storage box with a hinged lid (synthetic dev asset)",
+  "dimensions_m": {
+    "width_x": 0.4,
+    "depth_y": 0.3,
+    "height_z": 0.27
+  },
+  "dimension_basis": "synthetic spec; for AI assets use the prompt/datasheet dimensions",
+  "density_kg_m3": 950.0,
+  "density_basis": "polypropylene, assumed uniform",
+  "parts": {
+    "body": {
+      "role": "base"
+    },
+    "lid": {
+      "role": "moving"
+    }
+  },
+  "joints": [
+    {
+      "name": "lid_hinge",
+      "type": "revolute",
+      "parent": "body",
+      "child": "lid",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "origin_m": [
+        0.0,
+        0.15,
+        0.25
+      ],
+      "limits_deg": [
+        -110.0,
+        0.0
+      ],
+      "basis": "hand-annotated: hinge along the back top edge of the body; 0 = closed, negative = opening (right-hand rule about +X)"
+    }
+  ]
+}

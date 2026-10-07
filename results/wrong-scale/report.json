@@ -1,0 +1,1014 @@
+{
+  "verdict": "FAIL",
+  "injected_defects": [
+    "INJECT_wrong_scale"
+  ],
+  "checks": [
+    {
+      "stage": "bpy",
+      "id": "parts_found",
+      "value": [
+        "body",
+        "lid"
+      ],
+      "ok": true
+    },
+    {
+      "stage": "bpy",
+      "id": "scale_after_fix",
+      "measured_height_m": 27.0,
+      "spec_height_m": 0.27,
+      "ok": false
+    },
+    {
+      "stage": "usd",
+      "id": "stage_metadata",
+      "upAxis": "Z",
+      "metersPerUnit": 1.0,
+      "ok": true
+    },
+    {
+      "stage": "usd",
+      "id": "usd_validation",
+      "errors": [],
+      "warnings": [],
+      "checker": "UsdValidation (28 validators)",
+      "ok": true
+    },
+    {
+      "stage": "mjcf",
+      "id": "joint_sweep",
+      "joint": "lid_hinge",
+      "range_deg": [
+        -110.0,
+        0.0
+      ],
+      "steps": 45,
+      "filterparent": "disabled",
+      "worst_penetration_mm": 4184.832750123549,
+      "tolerance_mm": 3.0,
+      "ok": false,
+      "note": "MuJoCo pass is not an Isaac Sim pass; convex hulls over-approximate thin parts"
+    }
+  ],
+  "stages": {
+    "bpy": {
+      "stage": "bpy",
+      "blender": "5.2.2 LTS",
+      "input": "/Users/yzj/Desktop/library/project_list/simready-fixup/samples/box_lid_raw.glb",
+      "checks": [
+        {
+          "id": "parts_found",
+          "value": [
+            "body",
+            "lid"
+          ],
+          "ok": true
+        },
+        {
+          "id": "bbox_raw_m",
+          "min": [
+            -20.0,
+            -15.0,
+            0.0
+          ],
+          "max": [
+            20.0,
+            15.0,
+            27.0
+          ],
+          "size": [
+            40.0,
+            30.0,
+            27.0
+          ]
+        },
+        {
+          "id": "scale_vs_spec_input",
+          "measured_height_m": 27.0,
+          "spec_height_m": 0.27,
+          "ratio": 0.01,
+          "input_ok": false,
+          "basis": "synthetic spec; for AI assets use the prompt/datasheet dimensions"
+        },
+        {
+          "id": "scale_after_fix",
+          "measured_height_m": 27.0,
+          "spec_height_m": 0.27,
+          "ok": false
+        },
+        {
+          "id": "bbox_fixed_m",
+          "min": [
+            -20.0,
+            -15.0,
+            0.0
+          ],
+          "max": [
+            20.0,
+            15.0,
+            27.0
+          ],
+          "size": [
+            40.0,
+            30.0,
+            27.0
+          ],
+          "up_axis": "Z",
+          "meters_per_unit": 1.0
+        }
+      ],
+      "actions": [
+        {
+          "id": "INJECT_wrong_scale",
+          "note": "rescale deliberately skipped",
+          "factor": 0.01
+        },
+        {
+          "id": "recenter_origin",
+          "shift_m": [
+            -0.0,
+            -0.0,
+            -0.0
+          ],
+          "convention": "Z-up, metres, base centre at origin"
+        }
+      ],
+      "parts": {
+        "body": {
+          "obj": "out/wrong-scale/body.obj",
+          "faces": 60,
+          "watertight": true,
+          "bbox_min": [
+            -20.0,
+            -15.0,
+            0.0
+          ],
+          "bbox_max": [
+            20.0,
+            15.0,
+            25.0
+          ]
+        },
+        "lid": {
+          "obj": "out/wrong-scale/lid.obj",
+          "faces": 12,
+          "watertight": true,
+          "bbox_min": [
+            -20.0,
+            -15.0,
+            25.0
+          ],
+          "bbox_max": [
+            20.0,
+            15.0,
+            27.0
+          ]
+        }
+      },
+      "usd_visual": "out/wrong-scale/asset_visual.usda"
+    },
+    "usd": {
+      "stage": "usd",
+      "source": "out/wrong-scale/asset_visual.usda",
+      "checks": [
+        {
+          "id": "stage_metadata",
+          "upAxis": "Z",
+          "metersPerUnit": 1.0,
+          "ok": true
+        },
+        {
+          "id": "usd_validation",
+          "errors": [],
+          "warnings": [],
+          "checker": "UsdValidation (28 validators)",
+          "ok": true
+        }
+      ],
+      "actions": [
+        {
+          "id": "articulation_root",
+          "prim": "/asset"
+        },
+        {
+          "id": "physics_body",
+          "part": "body",
+          "prim": "/asset/body",
+          "mass_kg": 4465000.0,
+          "volume_m3": 4700.0,
+          "com": [
+            0.0,
+            0.0,
+            9.436170212765957
+          ],
+          "diag_inertia": [
+            887527225.177305,
+            1242827225.177305,
+            1539316666.6666667
+          ],
+          "principal_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "basis": "sum of 5 watertight component(s)",
+          "density_basis": "polypropylene, assumed uniform"
+        },
+        {
+          "id": "physics_body",
+          "part": "lid",
+          "prim": "/asset/lid",
+          "mass_kg": 2280000.0,
+          "volume_m3": 2400.0,
+          "com": [
+            0.0,
+            0.0,
+            26.0
+          ],
+          "diag_inertia": [
+            171760000.0,
+            304760000.0,
+            475000000.0
+          ],
+          "principal_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "basis": "sum of 1 watertight component(s)",
+          "density_basis": "polypropylene, assumed uniform"
+        },
+        {
+          "id": "revolute_joint",
+          "prim": "/asset/lid_hinge",
+          "axis": "X",
+          "origin_m": [
+            0.0,
+            0.15,
+            0.25
+          ],
+          "limits_deg": [
+            -110.0,
+            0.0
+          ],
+          "basis": "hand-annotated: hinge along the back top edge of the body; 0 = closed, negative = opening (right-hand rule about +X)",
+          "frame_note": "localPos0/1 are in body0/body1 local frames (identical to asset frame here because part xforms are identity)"
+        }
+      ],
+      "usd_physics": "out/wrong-scale/asset_physics.usda"
+    },
+    "mjcf": {
+      "stage": "mjcf",
+      "checks": [
+        {
+          "id": "joint_sweep",
+          "joint": "lid_hinge",
+          "range_deg": [
+            -110.0,
+            0.0
+          ],
+          "steps": 45,
+          "filterparent": "disabled",
+          "worst_penetration_mm": 4184.832750123549,
+          "tolerance_mm": 3.0,
+          "ok": false,
+          "note": "MuJoCo pass is not an Isaac Sim pass; convex hulls over-approximate thin parts"
+        }
+      ],
+      "actions": [
+        {
+          "id": "coacd",
+          "part": "body",
+          "hulls": 17,
+          "threshold": 0.05,
+          "hull_bbox_overshoot_mm": 220.0007399999997
+        },
+        {
+          "id": "coacd",
+          "part": "lid",
+          "hulls": 1,
+          "threshold": 0.05,
+          "hull_bbox_overshoot_mm": 1.000000082740371e-05
+        }
+      ],
+      "sweep": [
+        {
+          "angle_deg": -110.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -107.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -105.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -102.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -100.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -97.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -95.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -92.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -90.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -87.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -85.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -82.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -80.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -77.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -75.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -72.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -70.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -67.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -65.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -62.5,
+          "ncon": 8,
+          "max_penetration_mm": 1.6507243887835465,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -60.0,
+          "ncon": 8,
+          "max_penetration_mm": 629.4348393451435,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -57.5,
+          "ncon": 8,
+          "max_penetration_mm": 1208.9077576120274,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -55.0,
+          "ncon": 10,
+          "max_penetration_mm": 1738.9664195544308,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -52.5,
+          "ncon": 14,
+          "max_penetration_mm": 2218.601828382776,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -50.0,
+          "ncon": 14,
+          "max_penetration_mm": 2646.900970835671,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -47.5,
+          "ncon": 18,
+          "max_penetration_mm": 3022.5809189984334,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -45.0,
+          "ncon": 18,
+          "max_penetration_mm": 3345.845886051365,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -42.5,
+          "ncon": 21,
+          "max_penetration_mm": 3628.492796061289,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -40.0,
+          "ncon": 22,
+          "max_penetration_mm": 3834.5756329936125,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -37.5,
+          "ncon": 23,
+          "max_penetration_mm": 3993.1987743184377,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -35.0,
+          "ncon": 22,
+          "max_penetration_mm": 4112.21928769101,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -32.5,
+          "ncon": 22,
+          "max_penetration_mm": 4184.832750123549,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -30.0,
+          "ncon": 21,
+          "max_penetration_mm": 4183.850405654226,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -27.5,
+          "ncon": 21,
+          "max_penetration_mm": 4134.270051957557,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -25.0,
+          "ncon": 21,
+          "max_penetration_mm": 4037.6665198150167,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -22.5,
+          "ncon": 24,
+          "max_penetration_mm": 3883.3281420279704,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -20.0,
+          "ncon": 24,
+          "max_penetration_mm": 3665.1598563826265,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -17.5,
+          "ncon": 24,
+          "max_penetration_mm": 3410.5027823017613,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -15.0,
+          "ncon": 24,
+          "max_penetration_mm": 3116.2800334316607,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -12.5,
+          "ncon": 18,
+          "max_penetration_mm": 2755.6532353080856,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -10.0,
+          "ncon": 16,
+          "max_penetration_mm": 2349.857298152053,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ],
+            [
+              "body_hull06",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -7.5,
+          "ncon": 18,
+          "max_penetration_mm": 1892.4752423737896,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull04",
+              "lid_hull00"
+            ],
+            [
+              "body_hull04",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -5.0,
+          "ncon": 18,
+          "max_penetration_mm": 1389.664623521414,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull04",
+              "lid_hull00"
+            ],
+            [
+              "body_hull04",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -2.5,
+          "ncon": 24,
+          "max_penetration_mm": 829.2471031186927,
+          "pairs": [
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ]
+          ]
+        },
+        {
+          "angle_deg": 0.0,
+          "ncon": 36,
+          "max_penetration_mm": 220.15310028241453,
+          "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ]
+          ]
+        }
+      ],
+      "mjcf": "out/wrong-scale/asset.xml"
+    }
+  }
+}

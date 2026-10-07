@@ -1,0 +1,17 @@
+[project]
+name = "simready-fixup"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "bpy>=5.2.2",
+    "coacd>=1.0.14",
+    "matplotlib>=3.11.2",
+    "mujoco>=3.15.0",
+    "networkx>=3.7",
+    "numpy>=2.5.3",
+    "pillow>=12.3.0",
+    "scipy>=1.18.1",
+    "trimesh>=5.1.1",
+    "usd-core>=26.8",
+]
