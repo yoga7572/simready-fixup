@@ -8,7 +8,7 @@ import numpy as np
 import trimesh
 from pxr import Usd, UsdGeom, UsdPhysics, Gf, Sdf
 
-def mass_props(obj_path, density):
+def mass_props(obj_path, density, wall_thickness=0.003):
     """Mass, COM and inertia from the watertight connected components of the part (hollow parts stay hollow).
     Falls back to the convex hull only when no component is closed; the basis is recorded in the report."""
     tm = trimesh.load(obj_path, force="mesh")
@@ -20,15 +20,25 @@ def mass_props(obj_path, density):
         if c.is_watertight and c.volume > 0: comps.append(c)
     if comps:
         basis = f"sum of {len(comps)} watertight component(s)"
+        masses = np.array([c.volume * density for c in comps]); vol = float(sum(c.volume for c in comps))
+        coms = np.array([c.center_mass for c in comps]); mass = float(masses.sum())
+        com = (masses[:, None] * coms).sum(0) / mass
+        I = np.zeros((3, 3))
+        for c, mc, cc in zip(comps, masses, coms):
+            d = cc - com
+            I += c.moment_inertia * density + mc * (np.dot(d, d) * np.eye(3) - np.outer(d, d))  # parallel-axis shift to the part COM
     else:
-        comps = [tm.convex_hull]; basis = "convex hull (no closed component)"
-    masses = np.array([c.volume * density for c in comps]); vol = float(sum(c.volume for c in comps))
-    coms = np.array([c.center_mass for c in comps]); mass = float(masses.sum())
-    com = (masses[:, None] * coms).sum(0) / mass
-    I = np.zeros((3, 3))
-    for c, mc, cc in zip(comps, masses, coms):
-        d = cc - com
-        I += c.moment_inertia * density + mc * (np.dot(d, d) * np.eye(3) - np.outer(d, d))  # parallel-axis shift to the part COM
+        # open shell: treat it as a thin wall of assumed thickness instead of filling it (a convex hull would make a
+        # hollow box 10x too heavy). Inertia from the surface mass distribution.
+        t = wall_thickness; area = float(tm.area)
+        vol = area * t / 2.0  # the mesh usually has inner+outer skins, so half the area is the outer wall
+        mass = vol * density
+        tri = tm.triangles; a = tm.area_faces; cen = tri.mean(axis=1)
+        com = (a[:, None] * cen).sum(0) / a.sum()
+        d = cen - com; mi = mass * a / a.sum()
+        I = np.zeros((3, 3))
+        for di, m_i in zip(d, mi): I += m_i * (np.dot(di, di) * np.eye(3) - np.outer(di, di))
+        basis = f"open shell: surface area {area:.3f} m2 x assumed wall thickness {t*1000:.1f} mm / 2 (no closed component after hole filling)"
     w, V = np.linalg.eigh(I)
     if np.linalg.det(V) < 0: V[:, 0] *= -1
     q = trimesh.transformations.quaternion_from_matrix(np.r_[np.c_[V, [0, 0, 0]], [[0, 0, 0, 1]]])  # (w,x,y,z)
@@ -108,7 +118,7 @@ def main():
         UsdPhysics.CollisionAPI.Apply(mesh.GetPrim())
         mc = UsdPhysics.MeshCollisionAPI.Apply(mesh.GetPrim())
         mc.CreateApproximationAttr(UsdPhysics.Tokens.convexDecomposition)
-        mp = mass_props(os.path.join(a.outdir, f"{name}.obj"), spec["density_kg_m3"])
+        mp = mass_props(os.path.join(a.outdir, f"{name}.obj"), spec["density_kg_m3"], float(spec.get("wall_thickness_m", 0.003)))
         massapi = UsdPhysics.MassAPI.Apply(xf.GetPrim())
         massapi.CreateMassAttr(float(mp["mass_kg"]))
         massapi.CreateCenterOfMassAttr(Gf.Vec3f(*mp["com"]))

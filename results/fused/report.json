@@ -13,8 +13,9 @@
     {
       "stage": "bpy",
       "id": "scale_after_fix",
-      "measured_height_m": 0.26999998092651367,
-      "spec_height_m": 0.27,
+      "axis": "height_z",
+      "measured_m": 0.26999998092651367,
+      "spec_m": 0.27,
       "ok": true
     },
     {
@@ -34,6 +35,14 @@
     },
     {
       "stage": "mjcf",
+      "id": "collision_proxy_fill",
+      "ok": true,
+      "parts_over_limit": [],
+      "limit": 4.0,
+      "note": "sum of hull volumes / material volume (closed mesh volume, or area x wall thickness / 2 for open shells); far above 1 means the decomposition sealed a cavity (non-manifold input or too coarse preprocess_resolution) and the sweep tested a solid block"
+    },
+    {
+      "stage": "mjcf",
       "id": "joint_sweep",
       "joint": "lid_hinge",
       "range_deg": [
@@ -42,7 +51,7 @@
       ],
       "steps": 45,
       "filterparent": "disabled",
-      "worst_penetration_mm": 2.2000109605579774,
+      "worst_penetration_mm": 1.3866994959454284,
       "tolerance_mm": 3.0,
       "ok": true,
       "note": "MuJoCo pass is not an Isaac Sim pass; convex hulls over-approximate thin parts"
@@ -65,49 +74,51 @@
           "id": "bbox_raw_m",
           "min": [
             -20.0,
-            -15.0,
+            -15.000000953674316,
             0.0
           ],
           "max": [
             20.0,
-            15.0,
+            15.000000953674316,
             27.0
           ],
           "size": [
             40.0,
-            30.0,
+            30.000001907348633,
             27.0
           ]
         },
         {
           "id": "scale_vs_spec_input",
-          "measured_height_m": 27.0,
-          "spec_height_m": 0.27,
+          "axis": "height_z",
+          "measured_m": 27.0,
+          "spec_m": 0.27,
           "ratio": 0.01,
           "input_ok": false,
           "basis": "synthetic spec; for AI assets use the prompt/datasheet dimensions"
         },
         {
           "id": "scale_after_fix",
-          "measured_height_m": 0.26999998092651367,
-          "spec_height_m": 0.27,
+          "axis": "height_z",
+          "measured_m": 0.26999998092651367,
+          "spec_m": 0.27,
           "ok": true
         },
         {
           "id": "bbox_fixed_m",
           "min": [
             -0.19999998807907104,
-            -0.14999999105930328,
+            -0.15000000596046448,
             0.0
           ],
           "max": [
             0.19999998807907104,
-            0.14999999105930328,
+            0.15000000596046448,
             0.26999998092651367
           ],
           "size": [
             0.3999999761581421,
-            0.29999998211860657,
+            0.30000001192092896,
             0.26999998092651367
           ],
           "up_axis": "Z",
@@ -118,7 +129,7 @@
         {
           "id": "rescale",
           "factor": 0.01,
-          "reason": "height differs from spec by >5%"
+          "reason": "height_z differs from spec by >5%"
         },
         {
           "id": "recenter_origin",
@@ -132,42 +143,42 @@
         {
           "id": "split_plane",
           "axis": "z",
-          "at_m": 0.25,
+          "at_m": 0.2495,
           "names": [
             "body",
             "lid"
           ],
-          "basis": "hand-annotated seam height between body rim and lid"
+          "basis": "hand-annotated seam at z = 0.25; cut 0.5 mm INTO the body so faces lying exactly on the seam (the lid's underside) stay with the lid instead of sealing the body"
         }
       ],
       "parts": {
         "body": {
           "obj": "out/fused/body.obj",
-          "faces": 62,
-          "watertight": false,
+          "faces": 44,
+          "watertight": true,
           "bbox_min": [
             -0.19999998807907104,
-            -0.14999999105930328,
+            -0.15000000596046448,
             0.0
           ],
           "bbox_max": [
             0.19999998807907104,
-            0.14999999105930328,
-            0.25
+            0.15000000596046448,
+            0.24950000643730164
           ]
         },
         "lid": {
           "obj": "out/fused/lid.obj",
-          "faces": 12,
+          "faces": 60,
           "watertight": true,
           "bbox_min": [
             -0.19999998807907104,
-            -0.14999999105930328,
-            0.25
+            -0.15000000596046448,
+            0.24950000643730164
           ],
           "bbox_max": [
             0.19999998807907104,
-            0.14999999105930328,
+            0.15000000596046448,
             0.26999998092651367
           ]
         }
@@ -202,50 +213,50 @@
           "id": "physics_body",
           "part": "body",
           "prim": "/asset/body",
-          "mass_kg": 4.464996352000187,
-          "volume_m3": 0.004699996160000198,
+          "mass_kg": 4.234340603249913,
+          "volume_m3": 0.004457200634999908,
           "com": [
-            0.0,
-            0.0,
-            0.09436168066997014
+            -3.243297789414788e-17,
+            8.995083712830077e-18,
+            0.0961639000085647
           ],
           "diag_inertia": [
-            0.08875264013704787,
-            0.12428260680788447,
-            0.15393151391618476
+            0.0829246770800431,
+            0.11569448456893047,
+            0.1430883847111879
           ],
           "principal_quat_wxyz": [
             1.0,
-            0.0,
-            0.0,
-            0.0
+            -3.733555019371176e-16,
+            4.930380657631324e-32,
+            1.0477043176715946e-16
           ],
-          "basis": "sum of 5 watertight component(s)",
+          "basis": "sum of 1 watertight component(s)",
           "density_basis": "polypropylene, assumed uniform"
         },
         {
           "id": "physics_body",
           "part": "lid",
           "prim": "/asset/lid",
-          "mass_kg": 2.2799974540002705,
-          "volume_m3": 0.0023999973200002846,
+          "mass_kg": 2.2864573257502516,
+          "volume_m3": 0.0024067971850002643,
           "com": [
-            0.0,
-            0.0,
-            0.2599999899999999
+            -1.173112207007182e-19,
+            5.86556103503591e-20,
+            0.2599710309690162
           ],
           "diag_inertia": [
-            0.017175978388138335,
-            0.03047596277647409,
-            0.04749994163834505
+            0.017273958744871965,
+            0.030628471915151924,
+            0.04774907732299002
           ],
           "principal_quat_wxyz": [
+            0.9999999999999999,
+            4.2037262763219345e-16,
             0.0,
-            -1.0,
-            0.0,
-            4.528836618365216e-16
+            0.0
           ],
-          "basis": "sum of 1 watertight component(s)",
+          "basis": "sum of 2 watertight component(s)",
           "density_basis": "polypropylene, assumed uniform"
         },
         {
@@ -271,6 +282,13 @@
       "stage": "mjcf",
       "checks": [
         {
+          "id": "collision_proxy_fill",
+          "ok": true,
+          "parts_over_limit": [],
+          "limit": 4.0,
+          "note": "sum of hull volumes / material volume (closed mesh volume, or area x wall thickness / 2 for open shells); far above 1 means the decomposition sealed a cavity (non-manifold input or too coarse preprocess_resolution) and the sweep tested a solid block"
+        },
+        {
           "id": "joint_sweep",
           "joint": "lid_hinge",
           "range_deg": [
@@ -279,7 +297,7 @@
           ],
           "steps": 45,
           "filterparent": "disabled",
-          "worst_penetration_mm": 2.2000109605579774,
+          "worst_penetration_mm": 1.3866994959454284,
           "tolerance_mm": 3.0,
           "ok": true,
           "note": "MuJoCo pass is not an Isaac Sim pass; convex hulls over-approximate thin parts"
@@ -289,23 +307,33 @@
         {
           "id": "coacd",
           "part": "body",
-          "hulls": 1,
+          "hulls": 5,
           "threshold": 0.05,
-          "hull_bbox_overshoot_mm": 2.2000000000000073
+          "hull_bbox_overshoot_mm": 9.999999994736442e-06,
+          "hull_volume_m3": 0.00451,
+          "material_volume_m3": 0.00446,
+          "material_basis": "closed mesh volume",
+          "hull_over_material": 1.01156,
+          "hull_over_bbox": 0.15059
         },
         {
           "id": "coacd",
           "part": "lid",
           "hulls": 1,
           "threshold": 0.05,
-          "hull_bbox_overshoot_mm": 5.551115123125783e-14
+          "hull_bbox_overshoot_mm": 1.3750100000000098,
+          "hull_volume_m3": 0.00283,
+          "material_volume_m3": 0.00241,
+          "material_basis": "closed mesh volume",
+          "hull_over_material": 1.17485,
+          "hull_over_bbox": 1.14945
         }
       ],
       "sweep": [
         {
           "angle_deg": -110.0,
           "ncon": 2,
-          "max_penetration_mm": 0.6568081696955556,
+          "max_penetration_mm": 0.5769257851751753,
           "pairs": [
             [
               "body_hull00",
@@ -320,7 +348,7 @@
         {
           "angle_deg": -107.5,
           "ncon": 2,
-          "max_penetration_mm": 0.6568082393981897,
+          "max_penetration_mm": 0.5634354234408444,
           "pairs": [
             [
               "body_hull00",
@@ -335,7 +363,7 @@
         {
           "angle_deg": -105.0,
           "ncon": 2,
-          "max_penetration_mm": 0.6568083180510798,
+          "max_penetration_mm": 0.5507056721202911,
           "pairs": [
             [
               "body_hull00",
@@ -350,7 +378,7 @@
         {
           "angle_deg": -102.5,
           "ncon": 2,
-          "max_penetration_mm": 0.65680840550472,
+          "max_penetration_mm": 0.5387607630185808,
           "pairs": [
             [
               "body_hull00",
@@ -365,7 +393,7 @@
         {
           "angle_deg": -100.0,
           "ncon": 2,
-          "max_penetration_mm": 0.6568085015924616,
+          "max_penetration_mm": 0.5276234339491693,
           "pairs": [
             [
               "body_hull00",
@@ -380,7 +408,7 @@
         {
           "angle_deg": -97.5,
           "ncon": 2,
-          "max_penetration_mm": 0.6568086061315221,
+          "max_penetration_mm": 0.5173148854509267,
           "pairs": [
             [
               "body_hull00",
@@ -395,7 +423,7 @@
         {
           "angle_deg": -95.0,
           "ncon": 2,
-          "max_penetration_mm": 0.6568087189228793,
+          "max_penetration_mm": 0.5078547404317912,
           "pairs": [
             [
               "body_hull00",
@@ -410,7 +438,7 @@
         {
           "angle_deg": -92.5,
           "ncon": 2,
-          "max_penetration_mm": 0.6568088397518106,
+          "max_penetration_mm": 0.4992610068154648,
           "pairs": [
             [
               "body_hull00",
@@ -425,7 +453,7 @@
         {
           "angle_deg": -90.0,
           "ncon": 2,
-          "max_penetration_mm": 0.6568089683882262,
+          "max_penetration_mm": 0.4915500432624649,
           "pairs": [
             [
               "body_hull00",
@@ -440,7 +468,7 @@
         {
           "angle_deg": -87.5,
           "ncon": 2,
-          "max_penetration_mm": 0.6568091045874246,
+          "max_penetration_mm": 0.48473652803004635,
           "pairs": [
             [
               "body_hull00",
@@ -455,7 +483,7 @@
         {
           "angle_deg": -85.0,
           "ncon": 2,
-          "max_penetration_mm": 0.6568092480900573,
+          "max_penetration_mm": 0.47883343103176035,
           "pairs": [
             [
               "body_hull00",
@@ -470,7 +498,7 @@
         {
           "angle_deg": -82.5,
           "ncon": 2,
-          "max_penetration_mm": 0.6568093986229405,
+          "max_penetration_mm": 0.473851989148235,
           "pairs": [
             [
               "body_hull00",
@@ -485,7 +513,7 @@
         {
           "angle_deg": -80.0,
           "ncon": 2,
-          "max_penetration_mm": 0.6568095558995738,
+          "max_penetration_mm": 0.46980168483715157,
           "pairs": [
             [
               "body_hull00",
@@ -500,7 +528,7 @@
         {
           "angle_deg": -77.5,
           "ncon": 2,
-          "max_penetration_mm": 0.656809719620493,
+          "max_penetration_mm": 0.4666902280830755,
           "pairs": [
             [
               "body_hull00",
@@ -514,9 +542,17 @@
         },
         {
           "angle_deg": -75.0,
-          "ncon": 2,
-          "max_penetration_mm": 0.6568098894741018,
+          "ncon": 4,
+          "max_penetration_mm": 0.4659210202076896,
           "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -529,9 +565,17 @@
         },
         {
           "angle_deg": -72.5,
-          "ncon": 2,
-          "max_penetration_mm": 0.6568100651370774,
+          "ncon": 4,
+          "max_penetration_mm": 0.46356743494814384,
           "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -544,9 +588,17 @@
         },
         {
           "angle_deg": -70.0,
-          "ncon": 2,
-          "max_penetration_mm": 0.6568102462750182,
+          "ncon": 4,
+          "max_penetration_mm": 0.4700165748907724,
           "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -559,9 +611,17 @@
         },
         {
           "angle_deg": -67.5,
-          "ncon": 2,
-          "max_penetration_mm": 0.6568104325431394,
+          "ncon": 4,
+          "max_penetration_mm": 0.5006899674199572,
           "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -575,7 +635,7 @@
         {
           "angle_deg": -65.0,
           "ncon": 2,
-          "max_penetration_mm": 0.6568106235868629,
+          "max_penetration_mm": 0.5294584962112026,
           "pairs": [
             [
               "body_hull00",
@@ -590,7 +650,7 @@
         {
           "angle_deg": -62.5,
           "ncon": 2,
-          "max_penetration_mm": 0.6568108190425382,
+          "max_penetration_mm": 0.55626739873472,
           "pairs": [
             [
               "body_hull00",
@@ -605,7 +665,7 @@
         {
           "angle_deg": -60.0,
           "ncon": 2,
-          "max_penetration_mm": 0.656811018538076,
+          "max_penetration_mm": 0.5810656427210159,
           "pairs": [
             [
               "body_hull00",
@@ -620,7 +680,7 @@
         {
           "angle_deg": -57.5,
           "ncon": 2,
-          "max_penetration_mm": 0.6568112216937725,
+          "max_penetration_mm": 0.6038060233030751,
           "pairs": [
             [
               "body_hull00",
@@ -635,7 +695,7 @@
         {
           "angle_deg": -55.0,
           "ncon": 2,
-          "max_penetration_mm": 0.6568114281227697,
+          "max_penetration_mm": 0.6244452528739541,
           "pairs": [
             [
               "body_hull00",
@@ -650,7 +710,7 @@
         {
           "angle_deg": -52.5,
           "ncon": 2,
-          "max_penetration_mm": 0.6568116374323159,
+          "max_penetration_mm": 0.6429440434871736,
           "pairs": [
             [
               "body_hull00",
@@ -665,7 +725,7 @@
         {
           "angle_deg": -50.0,
           "ncon": 2,
-          "max_penetration_mm": 0.6568118492238529,
+          "max_penetration_mm": 0.6592671816434781,
           "pairs": [
             [
               "body_hull00",
@@ -680,7 +740,7 @@
         {
           "angle_deg": -47.5,
           "ncon": 2,
-          "max_penetration_mm": 0.6568120630942589,
+          "max_penetration_mm": 0.6733835953215227,
           "pairs": [
             [
               "body_hull00",
@@ -695,7 +755,7 @@
         {
           "angle_deg": -45.0,
           "ncon": 2,
-          "max_penetration_mm": 0.6568122786364109,
+          "max_penetration_mm": 0.6852664131255325,
           "pairs": [
             [
               "body_hull00",
@@ -709,17 +769,9 @@
         },
         {
           "angle_deg": -42.5,
-          "ncon": 4,
-          "max_penetration_mm": 0.656812495440066,
+          "ncon": 2,
+          "max_penetration_mm": 0.6948930154366072,
           "pairs": [
-            [
-              "body_hull00",
-              "lid_hull00"
-            ],
-            [
-              "body_hull00",
-              "lid_hull00"
-            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -732,17 +784,9 @@
         },
         {
           "angle_deg": -40.0,
-          "ncon": 4,
-          "max_penetration_mm": 0.6568127130924153,
+          "ncon": 2,
+          "max_penetration_mm": 0.702245077469946,
           "pairs": [
-            [
-              "body_hull00",
-              "lid_hull00"
-            ],
-            [
-              "body_hull00",
-              "lid_hull00"
-            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -755,17 +799,9 @@
         },
         {
           "angle_deg": -37.5,
-          "ncon": 4,
-          "max_penetration_mm": 0.6568129311792257,
+          "ncon": 2,
+          "max_penetration_mm": 0.7070449566593003,
           "pairs": [
-            [
-              "body_hull00",
-              "lid_hull00"
-            ],
-            [
-              "body_hull00",
-              "lid_hull00"
-            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -778,17 +814,9 @@
         },
         {
           "angle_deg": -35.0,
-          "ncon": 4,
-          "max_penetration_mm": 0.6779646094753865,
+          "ncon": 2,
+          "max_penetration_mm": 0.7019963510511948,
           "pairs": [
-            [
-              "body_hull00",
-              "lid_hull00"
-            ],
-            [
-              "body_hull00",
-              "lid_hull00"
-            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -801,17 +829,9 @@
         },
         {
           "angle_deg": -32.5,
-          "ncon": 4,
-          "max_penetration_mm": 0.700227465844291,
+          "ncon": 2,
+          "max_penetration_mm": 0.6978782548986843,
           "pairs": [
-            [
-              "body_hull00",
-              "lid_hull00"
-            ],
-            [
-              "body_hull00",
-              "lid_hull00"
-            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -825,7 +845,7 @@
         {
           "angle_deg": -30.0,
           "ncon": 2,
-          "max_penetration_mm": 0.7166644385000175,
+          "max_penetration_mm": 0.6946985072320597,
           "pairs": [
             [
               "body_hull00",
@@ -839,9 +859,17 @@
         },
         {
           "angle_deg": -27.5,
-          "ncon": 2,
-          "max_penetration_mm": 0.7342794462308584,
+          "ncon": 4,
+          "max_penetration_mm": 0.6947280818119372,
           "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -854,9 +882,17 @@
         },
         {
           "angle_deg": -25.0,
-          "ncon": 2,
-          "max_penetration_mm": 0.7504967113020585,
+          "ncon": 4,
+          "max_penetration_mm": 0.6916517605096284,
           "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -870,7 +906,7 @@
         {
           "angle_deg": -22.5,
           "ncon": 4,
-          "max_penetration_mm": 0.7668811192596375,
+          "max_penetration_mm": 0.7028688932949958,
           "pairs": [
             [
               "body_hull00",
@@ -893,7 +929,7 @@
         {
           "angle_deg": -20.0,
           "ncon": 4,
-          "max_penetration_mm": 0.7787871572421795,
+          "max_penetration_mm": 0.783064265869389,
           "pairs": [
             [
               "body_hull00",
@@ -916,7 +952,7 @@
         {
           "angle_deg": -17.5,
           "ncon": 4,
-          "max_penetration_mm": 0.8873351651995882,
+          "max_penetration_mm": 0.8608172591795599,
           "pairs": [
             [
               "body_hull00",
@@ -938,13 +974,9 @@
         },
         {
           "angle_deg": -15.0,
-          "ncon": 3,
-          "max_penetration_mm": 1.084400592063716,
+          "ncon": 2,
+          "max_penetration_mm": 0.9359798659835457,
           "pairs": [
-            [
-              "body_hull00",
-              "lid_hull00"
-            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -958,7 +990,7 @@
         {
           "angle_deg": -12.5,
           "ncon": 2,
-          "max_penetration_mm": 1.2761589497269274,
+          "max_penetration_mm": 1.0084090099873952,
           "pairs": [
             [
               "body_hull00",
@@ -973,7 +1005,7 @@
         {
           "angle_deg": -10.0,
           "ncon": 2,
-          "max_penetration_mm": 1.4672258952596573,
+          "max_penetration_mm": 1.077966818198863,
           "pairs": [
             [
               "body_hull00",
@@ -987,8 +1019,8 @@
         },
         {
           "angle_deg": -7.5,
-          "ncon": 2,
-          "max_penetration_mm": 1.6554998929091131,
+          "ncon": 6,
+          "max_penetration_mm": 1.144520883376556,
           "pairs": [
             [
               "body_hull00",
@@ -997,14 +1029,30 @@
             [
               "body_hull00",
               "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
+            ],
+            [
+              "body_hull02",
+              "lid_hull00"
             ]
           ]
         },
         {
           "angle_deg": -5.0,
-          "ncon": 2,
-          "max_penetration_mm": 1.8476534315487532,
+          "ncon": 8,
+          "max_penetration_mm": 1.2079445160747349,
           "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -1017,9 +1065,17 @@
         },
         {
           "angle_deg": -2.5,
-          "ncon": 2,
-          "max_penetration_mm": 2.0241680417448866,
+          "ncon": 8,
+          "max_penetration_mm": 1.2681169858038766,
           "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
             [
               "body_hull00",
               "lid_hull00"
@@ -1032,8 +1088,8 @@
         },
         {
           "angle_deg": 0.0,
-          "ncon": 4,
-          "max_penetration_mm": 2.2000109605579774,
+          "ncon": 12,
+          "max_penetration_mm": 1.3866994959454284,
           "pairs": [
             [
               "body_hull00",

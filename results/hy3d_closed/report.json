@@ -1,0 +1,699 @@
+{
+  "verdict": "FAIL",
+  "injected_defects": [],
+  "checks": [
+    {
+      "stage": "bpy",
+      "id": "parts_found",
+      "value": [
+        "geometry_0"
+      ],
+      "ok": true
+    },
+    {
+      "stage": "bpy",
+      "id": "scale_after_fix",
+      "axis": "width_x",
+      "measured_m": 0.4000000059604645,
+      "spec_m": 0.4,
+      "ok": true
+    },
+    {
+      "stage": "usd",
+      "id": "stage_metadata",
+      "upAxis": "Z",
+      "metersPerUnit": 1.0,
+      "ok": true
+    },
+    {
+      "stage": "usd",
+      "id": "usd_validation",
+      "errors": [],
+      "warnings": [],
+      "checker": "UsdValidation (28 validators)",
+      "ok": true
+    },
+    {
+      "stage": "mjcf",
+      "id": "collision_proxy_fill",
+      "ok": false,
+      "parts_over_limit": [
+        [
+          "body",
+          35.6
+        ],
+        [
+          "lid",
+          16.2
+        ]
+      ],
+      "limit": 4.0,
+      "note": "sum of hull volumes / material volume (closed mesh volume, or area x wall thickness / 2 for open shells); far above 1 means the decomposition sealed a cavity (non-manifold input or too coarse preprocess_resolution) and the sweep tested a solid block"
+    },
+    {
+      "stage": "mjcf",
+      "id": "joint_sweep",
+      "joint": "lid_hinge",
+      "range_deg": [
+        -110.0,
+        0.0
+      ],
+      "steps": 45,
+      "filterparent": "disabled",
+      "worst_penetration_mm": 2.6668770297070163,
+      "tolerance_mm": 3.0,
+      "ok": true,
+      "note": "MuJoCo pass is not an Isaac Sim pass; convex hulls over-approximate thin parts"
+    }
+  ],
+  "stages": {
+    "bpy": {
+      "stage": "bpy",
+      "blender": "5.2.2 LTS",
+      "input": "/Users/yzj/Desktop/library/project_list/simready-fixup/samples/hy3d/closed_mesh.glb",
+      "checks": [
+        {
+          "id": "parts_found",
+          "value": [
+            "geometry_0"
+          ],
+          "ok": true
+        },
+        {
+          "id": "bbox_raw_m",
+          "min": [
+            -0.9969757795333862,
+            -0.9586725831031799,
+            -0.7032744884490967
+          ],
+          "max": [
+            0.9575509428977966,
+            0.9983611702919006,
+            0.6670303344726562
+          ],
+          "size": [
+            1.9545267224311829,
+            1.9570337533950806,
+            1.370304822921753
+          ]
+        },
+        {
+          "id": "scale_vs_spec_input",
+          "axis": "width_x",
+          "measured_m": 1.9545267224311829,
+          "spec_m": 0.4,
+          "ratio": 0.2046531241601296,
+          "input_ok": false,
+          "basis": "prompt asked for 40 x 30 x 27 cm; width is the scale basis. The generator made the footprint square (depth 0.40 at width 0.40) and the height 0.28, so depth and height here are measured, not requested."
+        },
+        {
+          "id": "scale_after_fix",
+          "axis": "width_x",
+          "measured_m": 0.4000000059604645,
+          "spec_m": 0.4,
+          "ok": true
+        },
+        {
+          "id": "bbox_fixed_m",
+          "min": [
+            -0.20000000298023224,
+            -0.20025654137134552,
+            0.0
+          ],
+          "max": [
+            0.20000000298023224,
+            0.20025654137134552,
+            0.280437171459198
+          ],
+          "size": [
+            0.4000000059604645,
+            0.40051308274269104,
+            0.280437171459198
+          ],
+          "up_axis": "Z",
+          "meters_per_unit": 1.0
+        }
+      ],
+      "actions": [
+        {
+          "id": "decimate",
+          "faces_before": 561392,
+          "faces_after": 60000,
+          "budget": 60000
+        },
+        {
+          "id": "rescale",
+          "factor": 0.2046531241601296,
+          "reason": "width_x differs from spec by >5%"
+        },
+        {
+          "id": "recenter_origin",
+          "shift_m": [
+            0.00403420627117157,
+            -0.004061192274093628,
+            0.14392732083797455
+          ],
+          "convention": "Z-up, metres, base centre at origin"
+        },
+        {
+          "id": "split_plane",
+          "axis": "z",
+          "at_m": 0.222,
+          "names": [
+            "body",
+            "lid"
+          ],
+          "basis": "measured: the footprint jumps from 0.373 m (body) to 0.400 m (lid overhang) at z = 0.223 m; cut just below the overhang"
+        }
+      ],
+      "parts": {
+        "body": {
+          "obj": "out/hy3d_closed/body.obj",
+          "faces": 28874,
+          "watertight": false,
+          "bbox_min": [
+            -0.18773886561393738,
+            -0.17939220368862152,
+            0.0
+          ],
+          "bbox_max": [
+            0.18757279217243195,
+            0.1830807328224182,
+            0.22200000286102295
+          ]
+        },
+        "lid": {
+          "obj": "out/hy3d_closed/lid.obj",
+          "faces": 33206,
+          "watertight": false,
+          "bbox_min": [
+            -0.20000000298023224,
+            -0.20025654137134552,
+            0.22200000286102295
+          ],
+          "bbox_max": [
+            0.20000000298023224,
+            0.20025654137134552,
+            0.280437171459198
+          ]
+        }
+      },
+      "preview": "out/hy3d_closed/preview.png",
+      "usd_visual": "out/hy3d_closed/asset_visual.usda"
+    },
+    "usd": {
+      "stage": "usd",
+      "source": "out/hy3d_closed/asset_visual.usda",
+      "checks": [
+        {
+          "id": "stage_metadata",
+          "upAxis": "Z",
+          "metersPerUnit": 1.0,
+          "ok": true
+        },
+        {
+          "id": "usd_validation",
+          "errors": [],
+          "warnings": [],
+          "checker": "UsdValidation (28 validators)",
+          "ok": true
+        }
+      ],
+      "actions": [
+        {
+          "id": "articulation_root",
+          "prim": "/asset"
+        },
+        {
+          "id": "physics_body",
+          "part": "body",
+          "prim": "/asset/body",
+          "mass_kg": 0.7879298390410645,
+          "volume_m3": 0.0008293998305695416,
+          "com": [
+            -1.336230396783372e-05,
+            0.0018603494105055548,
+            0.1166184175499691
+          ],
+          "diag_inertia": [
+            0.017941926248615032,
+            0.01904857364020376,
+            0.024951761996869506
+          ],
+          "principal_quat_wxyz": [
+            0.9999976605157279,
+            -0.0013581129383563087,
+            -9.753649615038878e-05,
+            -0.001680767369434965
+          ],
+          "basis": "open shell: surface area 0.553 m2 x assumed wall thickness 3.0 mm / 2 (no closed component after hole filling)",
+          "density_basis": "polypropylene, assumed uniform; walls are thin shells, filled holes may over-estimate mass"
+        },
+        {
+          "id": "physics_body",
+          "part": "lid",
+          "prim": "/asset/lid",
+          "mass_kg": 0.5257025700690353,
+          "volume_m3": 0.0005533711263884583,
+          "com": [
+            5.7769758495589235e-05,
+            0.0010032490549709227,
+            0.2489790452657522
+          ],
+          "diag_inertia": [
+            0.007147569263994981,
+            0.007824287106525813,
+            0.014317780570835836
+          ],
+          "principal_quat_wxyz": [
+            0.9999886039022218,
+            -0.0002574903242334885,
+            -1.9700866889119775e-05,
+            -0.004767114042529062
+          ],
+          "basis": "open shell: surface area 0.369 m2 x assumed wall thickness 3.0 mm / 2 (no closed component after hole filling)",
+          "density_basis": "polypropylene, assumed uniform; walls are thin shells, filled holes may over-estimate mass"
+        },
+        {
+          "id": "revolute_joint",
+          "prim": "/asset/lid_hinge",
+          "axis": "X",
+          "origin_m": [
+            0.0,
+            0.198,
+            0.222
+          ],
+          "limits_deg": [
+            -110.0,
+            0.0
+          ],
+          "basis": "hinge along the lid's lower back edge (y = +0.198 at the seam z = 0.222). 0 = closed as modelled; negative = opening (right-hand rule about +X); -110 = fully open",
+          "frame_note": "localPos0/1 are in body0/body1 local frames (identical to asset frame here because part xforms are identity)"
+        }
+      ],
+      "usd_physics": "out/hy3d_closed/asset_physics.usda"
+    },
+    "mjcf": {
+      "stage": "mjcf",
+      "checks": [
+        {
+          "id": "collision_proxy_fill",
+          "ok": false,
+          "parts_over_limit": [
+            [
+              "body",
+              35.6
+            ],
+            [
+              "lid",
+              16.2
+            ]
+          ],
+          "limit": 4.0,
+          "note": "sum of hull volumes / material volume (closed mesh volume, or area x wall thickness / 2 for open shells); far above 1 means the decomposition sealed a cavity (non-manifold input or too coarse preprocess_resolution) and the sweep tested a solid block"
+        },
+        {
+          "id": "joint_sweep",
+          "joint": "lid_hinge",
+          "range_deg": [
+            -110.0,
+            0.0
+          ],
+          "steps": 45,
+          "filterparent": "disabled",
+          "worst_penetration_mm": 2.6668770297070163,
+          "tolerance_mm": 3.0,
+          "ok": true,
+          "note": "MuJoCo pass is not an Isaac Sim pass; convex hulls over-approximate thin parts"
+        }
+      ],
+      "actions": [
+        {
+          "id": "coacd",
+          "part": "body",
+          "hulls": 1,
+          "threshold": 0.05,
+          "hull_bbox_overshoot_mm": 1.2901200000000057,
+          "hull_volume_m3": 0.0295,
+          "material_volume_m3": 0.00083,
+          "material_basis": "shell estimate: area x 3.0 mm / 2",
+          "hull_over_material": 35.56709,
+          "hull_over_bbox": 0.97677
+        },
+        {
+          "id": "coacd",
+          "part": "lid",
+          "hulls": 4,
+          "threshold": 0.05,
+          "hull_bbox_overshoot_mm": 1.3767600000000046,
+          "hull_volume_m3": 0.00897,
+          "material_volume_m3": 0.00055,
+          "material_basis": "shell estimate: area x 3.0 mm / 2",
+          "hull_over_material": 16.21835,
+          "hull_over_bbox": 0.95864
+        }
+      ],
+      "sweep": [
+        {
+          "angle_deg": -110.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -107.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -105.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -102.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -100.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -97.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -95.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -92.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -90.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -87.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -85.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -82.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -80.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -77.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -75.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -72.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -70.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -67.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -65.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -62.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -60.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -57.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -55.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -52.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -50.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -47.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -45.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -42.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -40.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -37.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -35.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -32.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -30.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -27.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -25.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -22.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -20.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -17.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -15.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -12.5,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -10.0,
+          "ncon": 0,
+          "max_penetration_mm": 0.0,
+          "pairs": []
+        },
+        {
+          "angle_deg": -7.5,
+          "ncon": 4,
+          "max_penetration_mm": 1.258188911810348,
+          "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull02"
+            ],
+            [
+              "body_hull00",
+              "lid_hull02"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -5.0,
+          "ncon": 7,
+          "max_penetration_mm": 1.186194461145081,
+          "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull02"
+            ]
+          ]
+        },
+        {
+          "angle_deg": -2.5,
+          "ncon": 7,
+          "max_penetration_mm": 1.9153823723636172,
+          "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull02"
+            ]
+          ]
+        },
+        {
+          "angle_deg": 0.0,
+          "ncon": 16,
+          "max_penetration_mm": 2.6668770297070163,
+          "pairs": [
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ],
+            [
+              "body_hull00",
+              "lid_hull00"
+            ]
+          ]
+        }
+      ],
+      "mjcf": "out/hy3d_closed/asset.xml"
+    }
+  }
+}

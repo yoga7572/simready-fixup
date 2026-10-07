@@ -6,11 +6,11 @@ Turn an AI-generated GLB into a simulation-ready asset — and prove it with a r
 
 | asset | source | verdict | why |
 |---|---|---|---|
-| `samples/box_lid_*.glb` | synthetic lidded box, shipped at 100x scale on purpose | **PASS** | scale fixed from the spec, hinge sweep clean (2.2 mm, CoACD hull overshoot) |
+| `samples/box_lid_*.glb` | synthetic lidded box, shipped at 100x scale on purpose; also as one fused mesh | **PASS** | scale fixed from the spec, fused mesh cut at the seam, hinge sweep clean (2.2 mm, CoACD hull overshoot) |
 | same, `--inject wrong-scale / lid-through-box / wrong-axis` | injected defects | **FAIL** x3 | the validator catches each one |
 | `samples/hy3d/white_mesh.glb` | **real AI mesh**: Hunyuan3D-2 (HF Space) from a FLUX.1-schnell reference photo, 724k faces, 15k loose shells, lid modelled open | **FAIL** | after fragment removal, decimation to 60k faces, width-based rescale and a seam cut at the rim, the lid cannot close: 25 mm interference between the lid skirt and the side walls. `calibrate_pivot` shows no hinge position within +-3 cm of the drawn knuckles fixes it, so it is the generator's geometry, not the annotation |
 | same mesh, `samples/hy3d_box_fixed_spec.json` | fix-up: joint moved to the best-fit **virtual** pivot (3 cm inside, 6 cm above the knuckles), travel -20..68 deg | **PASS** (2.5 mm) | the only rigid fix that works; documented in the spec as a simulation-only hinge, because a real hinge cannot sit there |
-| `samples/hy3d/closed_mesh.glb` | second generation from a **closed-lid** reference photo (1.09M faces, 524k loose shells) | see `results/hy3d_closed` | the workflow Palatial-style pipelines prefer: model closed, cut at the seam, articulate, validate opening |
+| `samples/hy3d/closed_mesh.glb` | second generation from a **closed-lid** reference photo (1.09M faces, 524k loose shells) | **FAIL** (`collision_proxy_fill`) | the joint sweep itself is clean (1.3-2.7 mm), but the shells cannot be closed by hole filling, so CoACD's manifold pre-pass seals the cavity: the hulls hold 35x the material volume at preprocess resolution 80 and 160 alike. The sweep tested a solid block, so the report refuses to call it a PASS. Next step would be a voxel remesh (Blender Remesh / manifold3d) before decomposition |
 
 Nothing here has been run inside Isaac Sim yet — see *Limitations*.
 
@@ -61,7 +61,8 @@ Generating your own input: `gen_tripo.py` (needs `TRIPO_API_KEY` in `.env`), or 
 `report_bpy.json` lists every action with its parameters: `remove_fragments` (drop shells under `min_component_faces`),
 `decimate` (collapse to `face_budget`), `rescale` (one spec dimension drives the factor, `scale_axis`), `recenter_origin`
 (base centre at the origin, Z-up), `split_plane` (bisect a fused mesh at the hand-annotated seam and cap the cut with a
-ring so hollow parts stay hollow), `rename_parts`. `preview.png` is a Cycles render of the result.
+ring so hollow parts stay hollow; annotate the seam slightly *into* the base part, so faces lying exactly on the seam
+such as a lid's underside go to the moving part instead of sealing the body), `rename_parts`. `preview.png` is a Cycles render of the result.
 
 ## The spec is the source of truth
 
@@ -77,10 +78,16 @@ from these is written back into the report together with its basis.
 | `scale_after_fix` | bpy | bounding-box height differs from the spec by more than 5 % after fix-up |
 | `stage_metadata` | usd | `upAxis` is not `Z` or `metersPerUnit` is not 1 |
 | `usd_validation` | usd | any UsdValidation error, or a part without RigidBodyAPI / CollisionAPI / positive mass, or a joint with invalid bodies or limits |
+| `collision_proxy_fill` | mjcf | the CoACD hulls of a part fill more than 60 % of its bounding box: the decomposition sealed a cavity (non-manifold input or too coarse `coacd_preprocess_resolution`), so the sweep would test a solid block instead of the walls |
 | `joint_sweep` | mjcf | max penetration between parts over the joint range exceeds the tolerance (default 3 mm) |
 
 Known tolerance source: CoACD hulls overshoot the surface by roughly 2 mm on this asset (`hull_bbox_overshoot_mm` in
 the report), so the tolerance cannot be tighter than that without better decomposition settings.
+
+Mass for an open shell that cannot be closed by hole filling is estimated as surface area x `wall_thickness_m`
+(default 3 mm) / 2, and the report says so; the alternative, a convex hull, makes a hollow 40 cm box weigh 27 kg.
+Spec knobs: `scale_axis`, `face_budget`, `min_component_faces`, `split`, `wall_thickness_m`,
+`coacd_preprocess_resolution` (80; 30 merges 3 mm walls into a solid), `collision_fill_limit`.
 
 ## Tooling note
 

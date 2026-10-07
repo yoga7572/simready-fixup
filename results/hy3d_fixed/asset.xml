@@ -1,0 +1,144 @@
+<mujoco model="hy3d_storage_box_virtual_hinge">
+  <compiler angle="degree" meshdir="mjcf_meshes"/>
+  <option gravity="0 0 -9.81"><flag filterparent="disable"/></option>
+  <visual><global offwidth="1280" offheight="720"/></visual>
+  <asset>
+    <mesh name="body_hull00" file="body_hull00.obj"/>
+    <mesh name="body_hull01" file="body_hull01.obj"/>
+    <mesh name="body_hull02" file="body_hull02.obj"/>
+    <mesh name="body_hull03" file="body_hull03.obj"/>
+    <mesh name="body_hull04" file="body_hull04.obj"/>
+    <mesh name="body_hull05" file="body_hull05.obj"/>
+    <mesh name="body_hull06" file="body_hull06.obj"/>
+    <mesh name="body_hull07" file="body_hull07.obj"/>
+    <mesh name="body_hull08" file="body_hull08.obj"/>
+    <mesh name="body_hull09" file="body_hull09.obj"/>
+    <mesh name="body_hull10" file="body_hull10.obj"/>
+    <mesh name="body_hull11" file="body_hull11.obj"/>
+    <mesh name="body_hull12" file="body_hull12.obj"/>
+    <mesh name="body_hull13" file="body_hull13.obj"/>
+    <mesh name="body_hull14" file="body_hull14.obj"/>
+    <mesh name="body_hull15" file="body_hull15.obj"/>
+    <mesh name="body_hull16" file="body_hull16.obj"/>
+    <mesh name="body_hull17" file="body_hull17.obj"/>
+    <mesh name="body_hull18" file="body_hull18.obj"/>
+    <mesh name="body_hull19" file="body_hull19.obj"/>
+    <mesh name="body_hull20" file="body_hull20.obj"/>
+    <mesh name="body_hull21" file="body_hull21.obj"/>
+    <mesh name="body_hull22" file="body_hull22.obj"/>
+    <mesh name="body_hull23" file="body_hull23.obj"/>
+    <mesh name="body_hull24" file="body_hull24.obj"/>
+    <mesh name="body_hull25" file="body_hull25.obj"/>
+    <mesh name="body_hull26" file="body_hull26.obj"/>
+    <mesh name="body_hull27" file="body_hull27.obj"/>
+    <mesh name="body_hull28" file="body_hull28.obj"/>
+    <mesh name="body_hull29" file="body_hull29.obj"/>
+    <mesh name="body_hull30" file="body_hull30.obj"/>
+    <mesh name="body_hull31" file="body_hull31.obj"/>
+    <mesh name="body_hull32" file="body_hull32.obj"/>
+    <mesh name="body_hull33" file="body_hull33.obj"/>
+    <mesh name="body_hull34" file="body_hull34.obj"/>
+    <mesh name="body_hull35" file="body_hull35.obj"/>
+    <mesh name="body_hull36" file="body_hull36.obj"/>
+    <mesh name="body_hull37" file="body_hull37.obj"/>
+    <mesh name="body_hull38" file="body_hull38.obj"/>
+    <mesh name="body_hull39" file="body_hull39.obj"/>
+    <mesh name="body_hull40" file="body_hull40.obj"/>
+    <mesh name="body_hull41" file="body_hull41.obj"/>
+    <mesh name="body_hull42" file="body_hull42.obj"/>
+    <mesh name="body_hull43" file="body_hull43.obj"/>
+    <mesh name="body_hull44" file="body_hull44.obj"/>
+    <mesh name="body_hull45" file="body_hull45.obj"/>
+    <mesh name="body_visual" file="body_visual.obj"/>
+    <mesh name="lid_hull00" file="lid_hull00.obj"/>
+    <mesh name="lid_hull01" file="lid_hull01.obj"/>
+    <mesh name="lid_hull02" file="lid_hull02.obj"/>
+    <mesh name="lid_hull03" file="lid_hull03.obj"/>
+    <mesh name="lid_hull04" file="lid_hull04.obj"/>
+    <mesh name="lid_hull05" file="lid_hull05.obj"/>
+    <mesh name="lid_hull06" file="lid_hull06.obj"/>
+    <mesh name="lid_hull07" file="lid_hull07.obj"/>
+    <mesh name="lid_hull08" file="lid_hull08.obj"/>
+    <mesh name="lid_hull09" file="lid_hull09.obj"/>
+    <mesh name="lid_hull10" file="lid_hull10.obj"/>
+    <mesh name="lid_hull11" file="lid_hull11.obj"/>
+    <mesh name="lid_hull12" file="lid_hull12.obj"/>
+    <mesh name="lid_hull13" file="lid_hull13.obj"/>
+    <mesh name="lid_hull14" file="lid_hull14.obj"/>
+    <mesh name="lid_hull15" file="lid_hull15.obj"/>
+    <mesh name="lid_hull16" file="lid_hull16.obj"/>
+    <mesh name="lid_visual" file="lid_visual.obj"/>
+  </asset>
+  <worldbody>
+    <body name="body" pos="0 0 0">
+      <geom name="body_hull00" type="mesh" mesh="body_hull00" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull01" type="mesh" mesh="body_hull01" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull02" type="mesh" mesh="body_hull02" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull03" type="mesh" mesh="body_hull03" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull04" type="mesh" mesh="body_hull04" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull05" type="mesh" mesh="body_hull05" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull06" type="mesh" mesh="body_hull06" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull07" type="mesh" mesh="body_hull07" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull08" type="mesh" mesh="body_hull08" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull09" type="mesh" mesh="body_hull09" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull10" type="mesh" mesh="body_hull10" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull11" type="mesh" mesh="body_hull11" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull12" type="mesh" mesh="body_hull12" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull13" type="mesh" mesh="body_hull13" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull14" type="mesh" mesh="body_hull14" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull15" type="mesh" mesh="body_hull15" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull16" type="mesh" mesh="body_hull16" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull17" type="mesh" mesh="body_hull17" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull18" type="mesh" mesh="body_hull18" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull19" type="mesh" mesh="body_hull19" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull20" type="mesh" mesh="body_hull20" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull21" type="mesh" mesh="body_hull21" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull22" type="mesh" mesh="body_hull22" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull23" type="mesh" mesh="body_hull23" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull24" type="mesh" mesh="body_hull24" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull25" type="mesh" mesh="body_hull25" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull26" type="mesh" mesh="body_hull26" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull27" type="mesh" mesh="body_hull27" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull28" type="mesh" mesh="body_hull28" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull29" type="mesh" mesh="body_hull29" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull30" type="mesh" mesh="body_hull30" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull31" type="mesh" mesh="body_hull31" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull32" type="mesh" mesh="body_hull32" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull33" type="mesh" mesh="body_hull33" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull34" type="mesh" mesh="body_hull34" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull35" type="mesh" mesh="body_hull35" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull36" type="mesh" mesh="body_hull36" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull37" type="mesh" mesh="body_hull37" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull38" type="mesh" mesh="body_hull38" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull39" type="mesh" mesh="body_hull39" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull40" type="mesh" mesh="body_hull40" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull41" type="mesh" mesh="body_hull41" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull42" type="mesh" mesh="body_hull42" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull43" type="mesh" mesh="body_hull43" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull44" type="mesh" mesh="body_hull44" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_hull45" type="mesh" mesh="body_hull45" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="body_visual" type="mesh" mesh="body_visual" contype="0" conaffinity="0" group="1" rgba="0.8 0.8 0.8 1"/>
+      <body name="lid" pos="0.0 0.112 0.278">
+        <joint name="lid_hinge" type="hinge" axis="1.0 0.0 0.0" range="-20.0 68.0" limited="true"/>
+      <geom name="lid_hull00" type="mesh" mesh="lid_hull00" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull01" type="mesh" mesh="lid_hull01" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull02" type="mesh" mesh="lid_hull02" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull03" type="mesh" mesh="lid_hull03" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull04" type="mesh" mesh="lid_hull04" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull05" type="mesh" mesh="lid_hull05" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull06" type="mesh" mesh="lid_hull06" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull07" type="mesh" mesh="lid_hull07" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull08" type="mesh" mesh="lid_hull08" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull09" type="mesh" mesh="lid_hull09" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull10" type="mesh" mesh="lid_hull10" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull11" type="mesh" mesh="lid_hull11" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull12" type="mesh" mesh="lid_hull12" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull13" type="mesh" mesh="lid_hull13" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull14" type="mesh" mesh="lid_hull14" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull15" type="mesh" mesh="lid_hull15" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_hull16" type="mesh" mesh="lid_hull16" group="3" rgba="0.2 0.6 1 0.3"/>
+      <geom name="lid_visual" type="mesh" mesh="lid_visual" contype="0" conaffinity="0" group="1" rgba="0.8 0.8 0.8 1"/>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>

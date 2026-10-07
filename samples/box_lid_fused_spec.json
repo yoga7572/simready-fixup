@@ -9,6 +9,7 @@
   "dimension_basis": "synthetic spec; for AI assets use the prompt/datasheet dimensions",
   "density_kg_m3": 950.0,
   "density_basis": "polypropylene, assumed uniform",
+  "wall_thickness_m": 0.01,
   "parts": {
     "body": {
       "role": "base"
@@ -19,12 +20,12 @@
   },
   "split": {
     "axis": "z",
-    "at_m": 0.25,
+    "at_m": 0.2495,
     "names": [
       "body",
       "lid"
     ],
-    "basis": "hand-annotated seam height between body rim and lid"
+    "basis": "hand-annotated seam at z = 0.25; cut 0.5 mm INTO the body so faces lying exactly on the seam (the lid's underside) stay with the lid instead of sealing the body"
   },
   "joints": [
     {

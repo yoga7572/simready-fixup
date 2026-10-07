@@ -15,16 +15,13 @@ def _box(extents, center):
     return m
 
 def make_lidded_box(w=0.40, d=0.30, h=0.25, wall=0.01, lid_t=0.02):
-    """Hollow open-top box (5 slabs) + flat lid resting on the rim. Units: metres, Z-up, origin at base centre."""
-    slabs = [
-        _box((w, d, wall), (0, 0, wall / 2)),                                  # bottom
-        _box((w, wall, h), (0, -d / 2 + wall / 2, h / 2)),                     # front wall
-        _box((w, wall, h), (0, d / 2 - wall / 2, h / 2)),                      # back wall
-        _box((wall, d, h), (-w / 2 + wall / 2, 0, h / 2)),                     # left wall
-        _box((wall, d, h), (w / 2 - wall / 2, 0, h / 2)),                      # right wall
-    ]
-    body = trimesh.util.concatenate(slabs)
+    """Hollow open-top box (manifold boolean: outer minus inner) + flat lid resting on the rim.
+    Units: metres, Z-up, origin at base centre."""
+    outer = _box((w, d, h), (0, 0, h / 2))
+    inner = _box((w - 2 * wall, d - 2 * wall, h), (0, 0, wall + h / 2))  # taller than the box: opens the top
+    body = trimesh.boolean.difference([outer, inner], engine="manifold")
     lid = _box((w, d, lid_t), (0, 0, h + lid_t / 2))
+    assert body.is_watertight and lid.is_watertight
     return body, lid
 
 Z_UP_TO_Y_UP = np.array([[1, 0, 0, 0], [0, 0, 1, 0], [0, -1, 0, 0], [0, 0, 0, 1]], dtype=float)
@@ -52,8 +49,9 @@ def main():
         "dimension_basis": "synthetic spec; for AI assets use the prompt/datasheet dimensions",
         "density_kg_m3": 950.0,
         "density_basis": "polypropylene, assumed uniform",
+        "wall_thickness_m": 0.01,
         "parts": {"body": {"role": "base"}, "lid": {"role": "moving"}},
-        "split": {"axis": "z", "at_m": 0.25, "names": ["body", "lid"], "basis": "hand-annotated seam height between body rim and lid"},
+        "split": {"axis": "z", "at_m": 0.2495, "names": ["body", "lid"], "basis": "hand-annotated seam at z = 0.25; cut 0.5 mm INTO the body so faces lying exactly on the seam (the lid's underside) stay with the lid instead of sealing the body"},
         "joints": [{
             "name": "lid_hinge", "type": "revolute", "parent": "body", "child": "lid",
             "axis": [1, 0, 0], "origin_m": [0.0, 0.15, 0.25],

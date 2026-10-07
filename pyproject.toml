@@ -6,6 +6,7 @@ requires-python = ">=3.13"
 dependencies = [
     "bpy>=5.2.2",
     "coacd>=1.0.14",
+    "manifold3d>=3.5.4",
     "matplotlib>=3.11.2",
     "mujoco>=3.15.0",
     "networkx>=3.7",

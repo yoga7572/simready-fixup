@@ -35,6 +35,14 @@
     },
     {
       "stage": "mjcf",
+      "id": "collision_proxy_fill",
+      "ok": true,
+      "parts_over_limit": [],
+      "limit": 4.0,
+      "note": "sum of hull volumes / material volume (closed mesh volume, or area x wall thickness / 2 for open shells); far above 1 means the decomposition sealed a cavity (non-manifold input or too coarse preprocess_resolution) and the sweep tested a solid block"
+    },
+    {
+      "stage": "mjcf",
       "id": "joint_sweep",
       "joint": "lid_hinge",
       "range_deg": [
@@ -280,6 +288,13 @@
       "stage": "mjcf",
       "checks": [
         {
+          "id": "collision_proxy_fill",
+          "ok": true,
+          "parts_over_limit": [],
+          "limit": 4.0,
+          "note": "sum of hull volumes / material volume (closed mesh volume, or area x wall thickness / 2 for open shells); far above 1 means the decomposition sealed a cavity (non-manifold input or too coarse preprocess_resolution) and the sweep tested a solid block"
+        },
+        {
           "id": "joint_sweep",
           "joint": "lid_hinge",
           "range_deg": [
@@ -300,14 +315,24 @@
           "part": "body",
           "hulls": 46,
           "threshold": 0.05,
-          "hull_bbox_overshoot_mm": 0.0
+          "hull_bbox_overshoot_mm": 0.0,
+          "hull_volume_m3": 0.00342,
+          "material_volume_m3": 0.00223,
+          "material_basis": "closed mesh volume",
+          "hull_over_material": 1.52934,
+          "hull_over_bbox": 0.13375
         },
         {
           "id": "coacd",
           "part": "lid",
           "hulls": 17,
           "threshold": 0.05,
-          "hull_bbox_overshoot_mm": 0.0
+          "hull_bbox_overshoot_mm": 0.0,
+          "hull_volume_m3": 0.00149,
+          "material_volume_m3": 0.00102,
+          "material_basis": "closed mesh volume",
+          "hull_over_material": 1.46021,
+          "hull_over_bbox": 0.13967
         }
       ],
       "sweep": [
