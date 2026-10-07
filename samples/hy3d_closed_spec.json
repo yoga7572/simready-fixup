@@ -1,0 +1,20 @@
+{
+  "name": "hy3d_storage_box_closed",
+  "description": "Same product, second generation: Hunyuan3D-2 (Hugging Face Space, shape only, seed 4321) from a FLUX.1-schnell reference photo with the lid CLOSED (samples/hy3d/box_closed_ref_ai.png). Chosen to test the opposite workflow: model closed, articulate, validate opening.",
+  "source": {"mesh": "samples/hy3d/closed_mesh.glb", "generator": "tencent/Hunyuan3D-2 /shape_generation", "reference_image": "samples/hy3d/box_closed_ref_ai.png", "faces_raw": 1085512, "components_raw": 524121, "watertight_raw": false},
+  "dimensions_m": {"width_x": 0.40, "depth_y": 0.40, "height_z": 0.28},
+  "scale_axis": "width_x",
+  "dimension_basis": "prompt asked for 40 x 30 x 27 cm; width is the scale basis. The generator made the footprint square (depth 0.40 at width 0.40) and the height 0.28, so depth and height here are measured, not requested.",
+  "density_kg_m3": 950.0,
+  "density_basis": "polypropylene, assumed uniform; walls are thin shells, filled holes may over-estimate mass",
+  "min_component_faces": 200,
+  "face_budget": 60000,
+  "parts": {"body": {"role": "base"}, "lid": {"role": "moving"}},
+  "split": {"axis": "z", "at_m": 0.222, "names": ["body", "lid"], "basis": "measured: the footprint jumps from 0.373 m (body) to 0.400 m (lid overhang) at z = 0.223 m; cut just below the overhang"},
+  "joints": [{
+    "name": "lid_hinge", "type": "revolute", "parent": "body", "child": "lid",
+    "axis": [1, 0, 0], "origin_m": [0.0, 0.198, 0.222],
+    "limits_deg": [-110.0, 0.0],
+    "basis": "hinge along the lid's lower back edge (y = +0.198 at the seam z = 0.222). 0 = closed as modelled; negative = opening (right-hand rule about +X); -110 = fully open"
+  }]
+}

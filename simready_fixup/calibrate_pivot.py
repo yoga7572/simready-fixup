@@ -12,9 +12,11 @@ def main():
     ap.add_argument("--dy", default="-0.02,0,0.02"); ap.add_argument("--dz", default="-0.02,0,0.02")
     ap.add_argument("--steps", type=int, default=30)
     ap.add_argument("--lid-scale", default="1.0", help="uniform scale of the child part about the hinge, e.g. 1.0,0.97,0.94")
+    ap.add_argument("--limits", default=None, help="override joint limits, e.g. -20,68")
     a = ap.parse_args()
     spec = json.load(open(a.spec)); j = spec["joints"][0]
     origin0 = np.array(j["origin_m"], float); axis = j["axis"]; lo, hi = j["limits_deg"]
+    if a.limits: lo, hi = [float(x) for x in a.limits.split(",")]
     meshdir = os.path.join(a.outdir, "mjcf_meshes")
     body_hulls = sorted(os.path.basename(p) for p in glob.glob(os.path.join(meshdir, f"{j['parent']}_hull*.obj")))
     lid_hulls = sorted(os.path.basename(p) for p in glob.glob(os.path.join(meshdir, f"{j['child']}_hull*.obj")))

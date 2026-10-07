@@ -8,7 +8,9 @@ Turn an AI-generated GLB into a simulation-ready asset — and prove it with a r
 |---|---|---|---|
 | `samples/box_lid_*.glb` | synthetic lidded box, shipped at 100x scale on purpose | **PASS** | scale fixed from the spec, hinge sweep clean (2.2 mm, CoACD hull overshoot) |
 | same, `--inject wrong-scale / lid-through-box / wrong-axis` | injected defects | **FAIL** x3 | the validator catches each one |
-| `samples/hy3d/white_mesh.glb` | **real AI mesh**: Hunyuan3D-2 (HF Space) from a FLUX.1-schnell reference photo, 724k faces, 15k loose shells, lid modelled open | **FAIL** | after fragment removal, decimation to 60k faces, width-based rescale and a seam cut at the rim, the lid cannot close: 25 mm interference between the lid skirt and the side walls. `calibrate_pivot` shows no hinge position within +-3 cm fixes it, so it is the generator's geometry, not the annotation |
+| `samples/hy3d/white_mesh.glb` | **real AI mesh**: Hunyuan3D-2 (HF Space) from a FLUX.1-schnell reference photo, 724k faces, 15k loose shells, lid modelled open | **FAIL** | after fragment removal, decimation to 60k faces, width-based rescale and a seam cut at the rim, the lid cannot close: 25 mm interference between the lid skirt and the side walls. `calibrate_pivot` shows no hinge position within +-3 cm of the drawn knuckles fixes it, so it is the generator's geometry, not the annotation |
+| same mesh, `samples/hy3d_box_fixed_spec.json` | fix-up: joint moved to the best-fit **virtual** pivot (3 cm inside, 6 cm above the knuckles), travel -20..68 deg | **PASS** (2.5 mm) | the only rigid fix that works; documented in the spec as a simulation-only hinge, because a real hinge cannot sit there |
+| `samples/hy3d/closed_mesh.glb` | second generation from a **closed-lid** reference photo (1.09M faces, 524k loose shells) | see `results/hy3d_closed` | the workflow Palatial-style pipelines prefer: model closed, cut at the seam, articulate, validate opening |
 
 Nothing here has been run inside Isaac Sim yet — see *Limitations*.
 
